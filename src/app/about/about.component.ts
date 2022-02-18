@@ -41,6 +41,41 @@ export class AboutComponent {
     }
 
 
+    onReadDoc() {
+        let path = "/courses/6toh18U4Are51LwS4ZgU";
+        this.db.doc(path)
+            .snapshotChanges()
+            .subscribe(snap => {
+            console.log(snap.payload.id);
+            console.log(snap.payload.data());
+        });
+    }
+
+    onReadCollection() {
+        let path = "/courses/6toh18U4Are51LwS4ZgU";
+        this.db.collection("courses",
+                ref => ref.where("seqNo", "<=", 20)
+                    .where("url", "==", "angular-forms-course")
+                    .orderBy("seqNo"))
+            .get().subscribe(snaps => {
+            snaps.forEach(snap => {
+                console.log(snap.id);
+                console.log(snap.data());
+
+            })
+        });
+    }
+
+    onReadCollectionGroup(): void {
+        this.db.collectionGroup('lessons',
+            ref => ref.where("seqNo", "==", 1))
+            .get().subscribe(snaps => {
+            snaps.forEach(snap => {
+                console.log(snap.id);
+                console.log(snap.data());
+            })
+        });
+    }
 }
 
 
